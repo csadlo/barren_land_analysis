@@ -29,38 +29,49 @@ Project can be run on any machine that supports Python 3.
 
 ## Getting Started
 
-Simply write a file containing the input lines of barren rectangles and send it to barren_land_analysis.py through stdin. If the user is on a linux machine and wishes to use a different grid size than the default 399 x 599, they can execute the command 'export OVERRIDE_DEFAULT_GRID_SIZE="1"' first. Then include the desired grid size in the first line of their input file. To undo this change, execute 'unset OVERRIDE_DEFAULT_GRID_SIZE"
+Simply write a file containing the input lines of barren rectangles and send it to barren_land_analysis.py through STDIN. If the user is on a linux machine and wishes to use a different grid size than the default 399 x 599, they can execute the command 'export OVERRIDE_DEFAULT_GRID_SIZE="1"' first. Then include the desired grid size in the first line of their input file. To undo this change, execute 'unset OVERRIDE_DEFAULT_GRID_SIZE"
 
 ### Sample Of Default Grid Size:
 
 Input File (input.txt):
+[source]
+--
 48 192 351 207
 48 392 351 407
 120 52 135 547
 260 52 275 547
+--
 
 Command:
 cat input.txt | python barren_land_analysis.py
 
 Output:
+[source]
+--
 22816 192608
+--
 
 
 ### Sample Of Custom Grid Size:
 
 Input File (input.txt):
+[source]
+--
 99 99
 20 60 39 79
 60 20 79 39
 60 60 79 79
+--
 
 Command:
 export OVERRIDE_DEFAULT_GRID_SIZE=1
 cat input.txt | python barren_land_analysis.py
 
 Output:
+[source]
+--
 8800
-
+--
 
 
 ## Testing
