@@ -34,44 +34,40 @@ Simply write a file containing the input lines of barren rectangles and send it 
 ### Sample Of Default Grid Size:
 
 Input File (input.txt):
-[source]
---
+```
 48 192 351 207
 48 392 351 407
 120 52 135 547
 260 52 275 547
---
+```
 
 Command:
 cat input.txt | python barren_land_analysis.py
 
 Output:
-[source]
---
+```
 22816 192608
---
+```
 
 
 ### Sample Of Custom Grid Size:
 
 Input File (input.txt):
-[source]
---
+```
 99 99
 20 60 39 79
 60 20 79 39
 60 60 79 79
---
+```
 
 Command:
 export OVERRIDE_DEFAULT_GRID_SIZE=1
 cat input.txt | python barren_land_analysis.py
 
 Output:
-[source]
---
+```
 8800
---
+```
 
 
 ## Testing
