@@ -29,16 +29,9 @@ Project can be run on any machine that supports Python 3.
 
 ## Getting Started
 
-Simply write a file containing the input lines of barren rectangles and send it to barren_land_analysis.py through STDIN. If the user is on a linux machine and wishes to use a different grid size than the default 399 x 599, they can execute the command: 
-```
-export OVERRIDE_DEFAULT_GRID_SIZE="1"
-```
-Then include the desired grid size in the first line of their input file. To undo this change, execute:
-```
-unset OVERRIDE_DEFAULT_GRID_SIZE
-```
+Simply write a file containing the input lines of barren rectangles and send it to barren_land_analysis.py through STDIN. 
 
-### Sample Of Default Grid Size:
+### Example Use Case Of Default Grid Size:
 
 Input File (input.txt):
 ```
@@ -58,8 +51,18 @@ Output:
 22816 192608
 ```
 
+### Bonus Use Of Program
 
-### Sample Of Custom Grid Size:
+If the user is on a linux machine and wishes to use a different grid size than the default 399 x 599, they can execute the command: 
+```
+export OVERRIDE_DEFAULT_GRID_SIZE="1"
+```
+Then include the desired grid size in the first line of their input file. To undo this change, execute:
+```
+unset OVERRIDE_DEFAULT_GRID_SIZE
+```
+
+### Example Use Case Of Custom Grid Size:
 
 Input File (input.txt):
 ```
@@ -86,8 +89,8 @@ Output:
 unittest_modules.py contains basic unit test cases for the helper functions (ie. used by algorithms but not algorithmic themselves) that are used by the main program, barren_land_analysis.py.
 
 The bash shell script test_BLA.sh performs all unit testing of the modules and tests barren_land_analysis.py using a many different input sets. Executing all the tests is as simple as:
-
+```
 ./test_BLA.sh
-
+```
 at the command line and should take about a minute to complete. Successful execution means that no messages are printed.
 
