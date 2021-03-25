@@ -117,7 +117,7 @@
 #############################################################################################
 #############################################################################################
 
-from BLA_modules import Point, Parcel, LandCollection, ParcelsHaveOverlap, ParcelContainsBarren, ParcelsShareBorder
+from BLA_modules import Point, Parcel, LandCollection, ParcelsHaveOverlap, ParcelContainsBarren, ParcelsShareBorder, PointIsInsideParcel
 from collections import deque
 
 
@@ -524,11 +524,90 @@ def Novel_BLA_Method(GRID_MAX_X, GRID_MAX_Y, list_of_barren_lands):
 
 
 
-# This is a simple "brute force" function that gets the job done. 
+# This is a simple "brute force" function that gets the job done but scales poorly with grid-size
 def Basic_Breadth_First_Search_Method(GRID_MAX_X, GRID_MAX_Y, list_of_barren_lands):
 
-    print("BFS Still needs to be implemented.")
+    debug = False
 
+    point_visited = []
+    # Generate a 2d Array of GRID and set each point to "-1" if it is a barren square meter
+    # Otherwise set it to 0
+    for X in range(GRID_MAX_X):
+        point_visited.append([])
+        for Y in range(GRID_MAX_Y):
+            point_visited[X].append([])
+
+            barren_pt = False
+            for parcel in list_of_barren_lands:
+                if PointIsInsideParcel(X, Y, parcel):
+                    barren_pt = True
+
+            if barren_pt:
+                point_visited[X][Y] = -1
+            else:
+                point_visited[X][Y] = 0
+
+    queue = deque()
+    list_of_land_collections = []
+
+    if debug:
+        for X in range(GRID_MAX_X):
+            print(point_visited[X])
+
+    # Cycle over the grid and find non-barren points that are connected to each other
+    for Y in range(GRID_MAX_Y):
+        for X in range(GRID_MAX_X):
+
+            if point_visited[X][Y] == 0:
+                if debug: print("queuing first thing X=",X,"Y=",Y, flush=True)
+                queue.append([X, Y])
+
+                # Being at this point in the code means that a new collection of parcels are being gathered
+                LC = []
+
+                while queue:
+
+                    point = queue.popleft()
+                    if debug: print("After popping, length of queue is ", len(queue))
+                    if debug: print("point = ", point, flush=True)
+
+                    this_points_X = point[0]
+                    this_points_Y = point[1]
+
+                    # If the grid point is out of bounds, just skip it and move on
+                    if this_points_X < 0 or this_points_X >= GRID_MAX_X or this_points_Y < 0 or this_points_Y >= GRID_MAX_Y:
+                        continue
+
+                    if debug: print("point = ", point, "is within bounds", flush=True)
+                    # If the grid point is in-bounds, isn't barren, and hasn't been visited, mark it as 
+                    # having now been visited....
+                    if point_visited[this_points_X][this_points_Y] == 0:
+                        if debug: print("Marking X=",this_points_X,"Y=",this_points_Y,"as visited")
+                        point_visited[this_points_X][this_points_Y] = 1
+                        LC.append([this_points_X,this_points_Y])    # We will use this later to count the total square meters
+
+                        # Then we get the neighbors of this newly-visited point and submit them to the queue for processing
+                        queue.append([this_points_X-1,this_points_Y])    # Left Neighbor
+                        queue.append([this_points_X+1,this_points_Y])    # Right Neighbor
+                        queue.append([this_points_X,this_points_Y+1])    # Top Neighbor
+                        queue.append([this_points_X,this_points_Y-1])    # Bottom Neighbor
+                        if debug: print("length of queue is ", len(queue))
+
+                # If LC is non-empty
+                if LC:
+                    list_of_land_collections.append(LC)
+
+    list_of_land_areas = []
+    for LC in list_of_land_collections:
+        list_of_land_areas.append(len(LC))
+
+    list_of_land_areas.sort()
+
+    if list_of_land_areas:
+        for LA in list_of_land_areas:
+            print(LA, end=' ')
+    else:
+        print("0", end=' ')
 
 
 
@@ -579,10 +658,10 @@ def main():
     # grid size and over 100 barren lands, the simple breadth-first search algorithm is easily outperformed
     # by the Novel_BLA_Method() which essentially runs in constant time relative to grid size.
     # The Novel_BLA_Method() is still unrefined and has a lot of room for improvement and optimization. 
-    # As it is improved, the algorithm factor cut-off of (0.20) can be increased.
+    # As it is improved, the algorithm cross-over factor of (0.20) can be increased.
     # In a real production code we would do more to better flesh out this handoff between alogorithms.
-    # I ran out of large input files to test on and didn't reveal where a basic meter-by-meter BFS algorithm 
-    # would be faster. I ultimately took an educated guess of 0.20.
+    # I ran out of large input files to test on and didn't reveal where a basic, square meter-wise 2d array Breadth-First-
+    # Search algorithm would be faster. I ultimately took an educated guess of 0.20.
 
     # TODO 
     # Write a script to generate larger input files to test on. An input file of 100 barren lands is too easy 

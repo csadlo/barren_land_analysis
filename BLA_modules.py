@@ -195,3 +195,7 @@ def ParcelsShareBorderDebug(parcel_A, parcel_B):
     print("Reason I:")
     return False
 
+# This function is simple enough. It checks if a point would be inside of a parcel by its description
+def PointIsInsideParcel(X, Y, parcel):
+
+    return (parcel.lowerleft.X <= X and X < parcel.upperright.X) and (parcel.lowerleft.Y <= Y and Y < parcel.upperright.Y)
